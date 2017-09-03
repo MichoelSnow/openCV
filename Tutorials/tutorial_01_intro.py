@@ -5,7 +5,6 @@ Created on Fri Sep 01 14:09:03 2017
 @author: BJ
 """
 
-import numpy as np
 import cv2
 import os
 from matplotlib import pyplot as plt
@@ -50,6 +49,16 @@ cv2.destroyAllWindows()
 # The first argument is the name of the file to write and the second arguemnt 
 # is the image
 cv2.imwrite('testimg.jpg',img)
+
+
+# Resizing and image
+img = cv2.imread('LegoAd.jpg',1)
+# need to declare window before showing image
+cv2.namedWindow('image',cv2.WINDOW_NORMAL)
+cv2.imshow('image',img)
+img_height = 600
+img_width = int(img_height*float(img.shape[0])/img.shape[1])
+cv2.resizeWindow('image', img_height,img_width)
 
 
 # %% VIDEO
