@@ -31,6 +31,7 @@ font = cv2.FONT_HERSHEY_SIMPLEX
 pc_opts = ['Rock','Paper','Scissors']
 pc_play = ['']
 hum_play = ['']
+hum_choice = ['']
 
 # Window size
 frameWidth = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
@@ -60,21 +61,21 @@ while(1):
     
     
     # Locate faces
-    if outcome_check:
-        fists = fist_cascade.detectMultiScale(gray, 1.3, 5)
-        palms = palm_cascade.detectMultiScale(gray, 1.3, 5)
-        hands = hand_cascade.detectMultiScale(gray, 1.3, 5)
-        if len(hands) > 0:
-            hum_play = ['Scissors']
-        elif len(fists) > 0 :
-            hum_play = ['Rock']
-        elif len(palms) > 0 :
-            hum_play = ['Paper']
-    else:
+    fists = fist_cascade.detectMultiScale(gray, 1.3, 5)
+    palms = palm_cascade.detectMultiScale(gray, 1.3, 5)
+    hands = hand_cascade.detectMultiScale(gray, 1.3, 5)
+    if len(hands) > 0:
+        hum_play = ['Scissors']
+    elif len(fists) > 0 :
+        hum_play = ['Rock']
+    elif len(palms) > 0 :
+        hum_play = ['Paper']
+    if not outcome_check:
         cv2.putText(frame,"Press S to start",(100,100), font, 2,(0,0,0),2,cv2.LINE_AA)
-
         
-    cv2.putText(frame,hum_play[0],(100,425), font, 1,(255,0,0),2,cv2.LINE_AA)
+    cv2.putText(frame,hum_play[0],(100,200), font, 2,(255,255,255),2,cv2.LINE_AA)
+        
+    cv2.putText(frame,hum_choice[0],(100,425), font, 1,(255,0,0),2,cv2.LINE_AA)
     cv2.putText(frame,pc_play[0],(100,350), font, 1,(0,0,255),2,cv2.LINE_AA)
     cv2.putText(frame,"Humans: " + str(hum_score),(250,425), font, 1,(255,0,0),2,cv2.LINE_AA)
     cv2.putText(frame,"Computer: " + str(pc_score),(250,350), font, 1,(0,0,255),2,cv2.LINE_AA)
@@ -121,6 +122,7 @@ while(1):
             playsound('The_Computer_Wins.mp3')
             outcome = 'Computer Wins'
             pc_score +=1
+        hum_choice = [hum_play[0]]
         cv2.putText(frame,outcome,(100,200), font, 4,(0,0,255),2,cv2.LINE_AA)
         outcome_check = 0
         
