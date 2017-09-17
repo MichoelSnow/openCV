@@ -40,12 +40,14 @@ frameHeight = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
 nSecond = 0
 totalSec = 3
 strSec = '321'
-#keyPressTime = 0.0
 startTime = 0.0
 timeElapsed = 0.0
 startCounter = False
-#endCounter = False
 outcome_check = 0
+
+# Running scores
+hum_score = 0
+pc_score = 0
 while(1):
 
     # Take each frame
@@ -69,11 +71,13 @@ while(1):
         elif len(palms) > 0 :
             hum_play = ['Paper']
     else:
-        cv2.putText(frame,"Press S to start",(100,250), font, 2,(0,0,0),2,cv2.LINE_AA)
+        cv2.putText(frame,"Press S to start",(100,100), font, 2,(0,0,0),2,cv2.LINE_AA)
 
         
-    cv2.putText(frame,hum_play[0],(100,400), font, 2,(255,0,0),2,cv2.LINE_AA)
-    cv2.putText(frame,pc_play[0],(100,100), font, 2,(0,0,255),2,cv2.LINE_AA)
+    cv2.putText(frame,hum_play[0],(100,425), font, 1,(255,0,0),2,cv2.LINE_AA)
+    cv2.putText(frame,pc_play[0],(100,350), font, 1,(0,0,255),2,cv2.LINE_AA)
+    cv2.putText(frame,"Humans: " + str(hum_score),(250,425), font, 1,(255,0,0),2,cv2.LINE_AA)
+    cv2.putText(frame,"Computer: " + str(pc_score),(250,350), font, 1,(0,0,255),2,cv2.LINE_AA)
     
     # Display counter on screen before saving a frame
     if startCounter:
@@ -88,13 +92,9 @@ while(1):
                         color = (255,255,255),
                         thickness = 5, 
                         lineType = cv2.LINE_AA)
-
             timeElapsed = (datetime.now() - startTime).total_seconds()
-#            print 'timeElapsed: {}'.format(timeElapsed)
-
             if timeElapsed >= 1:
                 nSecond += 1
-#                print 'nthSec:{}'.format(nSecond)
                 timeElapsed = 0
                 startTime = datetime.now()
     if nSecond == totalSec:
@@ -102,6 +102,7 @@ while(1):
         nSecond = 0
         startCounter = False
         pc_play = random.sample(pc_opts,1)
+        cv2.putText(frame,pc_play[0],(100,350), font, 1,(0,0,255),2,cv2.LINE_AA)
     
     # Outcome
     if pc_play != [''] and outcome_check:
@@ -113,26 +114,30 @@ while(1):
             (hum_play[0] == 'Paper' and pc_play[0] == 'Rock')):
             playsound('The_Human_Wins.mp3')
             outcome = 'Human Wins'
-        else:
+            hum_score +=1
+        elif ((pc_play[0] == 'Rock' and hum_play[0] == 'Scissors') or 
+            (pc_play[0] == 'Scissors' and hum_play[0] == 'Paper') or
+            (pc_play[0] == 'Paper' and hum_play[0] == 'Rock')):
             playsound('The_Computer_Wins.mp3')
             outcome = 'Computer Wins'
-        cv2.putText(frame,outcome,(100,300), font, 4,(0,0,255),2,cv2.LINE_AA)
+            pc_score +=1
+        cv2.putText(frame,outcome,(100,200), font, 4,(0,0,255),2,cv2.LINE_AA)
         outcome_check = 0
         
 
     
     
     cv2.imshow('frame',frame)
-#    cv2.imshow('mask',mask)
-#    cv2.imshow('res',res)
+
     k = cv2.waitKey(5) & 0xFF
     if k == 27 or k == ord('q'):
         break
     elif k == ord('s'):
-        playsound('Ready.mp3')
+#        playsound('Ready.mp3')
         startCounter = True      
         startTime = datetime.now()
         outcome_check = 1
+        pc_play = ['']
 #        keyPressTime = datetime.now()
 #        pc_play = random.sample(pc_opts,1)
     
