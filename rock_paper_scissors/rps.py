@@ -7,17 +7,17 @@ Created on Tue Sep 12 20:14:05 2017
 """
 
 import cv2
-import os
-import numpy as np
+#import os
+#import numpy as np
 import random
 #import time
-from matplotlib import pyplot as plt
+#from matplotlib import pyplot as plt
 from playsound import playsound
 from datetime import datetime
 
 
 #os.chdir('/home/bj/github/openCV/rock_paper_scissors')
-os.chdir('E:\\GitHub\\openCV\\rock_paper_scissors')
+#os.chdir('E:\\GitHub\\openCV\\rock_paper_scissors')
 
 # Rock paper Scissors 
 
