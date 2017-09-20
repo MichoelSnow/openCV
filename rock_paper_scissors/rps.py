@@ -7,13 +7,15 @@ Created on Tue Sep 12 20:14:05 2017
 """
 
 import cv2
-#import os
+import os
 #import numpy as np
 import random
 #import time
 #from matplotlib import pyplot as plt
 from playsound import playsound
 from datetime import datetime
+#import pygame
+#pygame.mixer.init()
 
 
 #os.chdir('/home/bj/github/openCV/rock_paper_scissors')
@@ -100,7 +102,12 @@ while(1):
                 timeElapsed = 0
                 startTime = datetime.now()
     if nSecond == totalSec:
+        os.system("aplay Shoot.wav")
         #playsound('Shoot.mp3')
+##        pygame.mixer.music.load('Shoot.mp3')
+##        pygame.mixer.music.play()
+##        while pygame.mixer.music.get_busy(): 
+##            pygame.time.Clock().tick(10)
         nSecond = 0
         startCounter = False
         pc_play = random.sample(pc_opts,1)
@@ -108,19 +115,36 @@ while(1):
     
     # Outcome
     if pc_play != [''] and outcome_check:
+        if hum_play[0] == 'Rock':
+            os.system("aplay Rock.wav")
+        elif hum_play[0] == 'Paper':
+            os.system("aplay Paper.wav")
+        elif hum_play[0] == 'Scissors':
+            os.system("aplay Scissors.wav")
+
+
+
+        
         if hum_play[0] == pc_play[0]:
             #playsound('It_is_a_tie.mp3')
+            os.system("aplay Tie.wav")
             outcome = 'Tie'
         elif ((hum_play[0] == 'Rock' and pc_play[0] == 'Scissors') or 
             (hum_play[0] == 'Scissors' and pc_play[0] == 'Paper') or
             (hum_play[0] == 'Paper' and pc_play[0] == 'Rock')):
             #playsound('The_Human_Wins.mp3')
+            os.system("aplay Hum_Win.wav")
             outcome = 'Human Wins'
             hum_score +=1
         elif ((pc_play[0] == 'Rock' and hum_play[0] == 'Scissors') or 
             (pc_play[0] == 'Scissors' and hum_play[0] == 'Paper') or
             (pc_play[0] == 'Paper' and hum_play[0] == 'Rock')):
             #playsound('The_Computer_Wins.mp3')
+            #pygame.mixer.music.load('The_Computer_Wins.mp3')
+            #pygame.mixer.music.play()
+            #while pygame.mixer.music.get_busy(): 
+            #    pygame.time.Clock().tick(10)
+            os.system("aplay Comp_Win.wav")
             outcome = 'Computer Wins'
             pc_score +=1
         hum_choice = [hum_play[0]]
@@ -137,7 +161,12 @@ while(1):
     if k == 27 or k == ord('q'):
         break
     elif k == ord('s'):
-        playsound('Ready.mp3')
+        os.system("aplay Ready.wav")
+        #playsound('Ready.mp3')
+        #pygame.mixer.music.load('Ready.mp3')
+        #pygame.mixer.music.play()
+        #while pygame.mixer.music.get_busy(): 
+        #    pygame.time.Clock().tick(10)
         startCounter = True      
         startTime = datetime.now()
         outcome_check = 1
