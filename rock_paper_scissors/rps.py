@@ -53,6 +53,7 @@ while(1):
 
     # Take each frame
     _, frame = cap.read()
+    frame = cv2.flip(frame,1)
     
     # Convert BGR to Gray
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
@@ -99,7 +100,7 @@ while(1):
                 timeElapsed = 0
                 startTime = datetime.now()
     if nSecond == totalSec:
-        playsound('Shoot.mp3')
+        #playsound('Shoot.mp3')
         nSecond = 0
         startCounter = False
         pc_play = random.sample(pc_opts,1)
@@ -108,18 +109,18 @@ while(1):
     # Outcome
     if pc_play != [''] and outcome_check:
         if hum_play[0] == pc_play[0]:
-            playsound('It_is_a_tie.mp3')
+            #playsound('It_is_a_tie.mp3')
             outcome = 'Tie'
         elif ((hum_play[0] == 'Rock' and pc_play[0] == 'Scissors') or 
             (hum_play[0] == 'Scissors' and pc_play[0] == 'Paper') or
             (hum_play[0] == 'Paper' and pc_play[0] == 'Rock')):
-            playsound('The_Human_Wins.mp3')
+            #playsound('The_Human_Wins.mp3')
             outcome = 'Human Wins'
             hum_score +=1
         elif ((pc_play[0] == 'Rock' and hum_play[0] == 'Scissors') or 
             (pc_play[0] == 'Scissors' and hum_play[0] == 'Paper') or
             (pc_play[0] == 'Paper' and hum_play[0] == 'Rock')):
-            playsound('The_Computer_Wins.mp3')
+            #playsound('The_Computer_Wins.mp3')
             outcome = 'Computer Wins'
             pc_score +=1
         hum_choice = [hum_play[0]]
@@ -128,14 +129,15 @@ while(1):
         
 
     
-    
+#    cv2.namedWindow("frame", cv2.WND_PROP_FULLSCREEN)          
+#    cv2.setWindowProperty("frame", cv2.WND_PROP_FULLSCREEN, cv2.cv.CV_WINDOW_FULLSCREEN)
     cv2.imshow('frame',frame)
 
-    k = cv2.waitKey(5) & 0xFF
+    k = cv2.waitKey(1) & 0xFF
     if k == 27 or k == ord('q'):
         break
     elif k == ord('s'):
-#        playsound('Ready.mp3')
+        playsound('Ready.mp3')
         startCounter = True      
         startTime = datetime.now()
         outcome_check = 1
